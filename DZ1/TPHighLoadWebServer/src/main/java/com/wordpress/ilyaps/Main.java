@@ -9,9 +9,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Main {
     private final static Logger LOGGER = Logger.getLogger(Main.class);
-    public static int PORT = 8080;
-
-    public static String DOCUMENT_ROOT = "/home/ilyaps/techpark/HL/DZ1/http-test-suite";
+    public static int PORT = 80;
+    public static String DOCUMENT_ROOT = "../http-test-suite";
     public static int NUMBER_CORE = 1;
 
     public static void main(String[] args) throws ParseException {

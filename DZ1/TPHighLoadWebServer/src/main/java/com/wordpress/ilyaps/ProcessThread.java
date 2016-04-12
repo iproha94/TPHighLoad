@@ -35,7 +35,7 @@ public class ProcessThread implements Runnable {
             try {
                 takeNewSockets();
 
-                int ready = selector.select();
+                int ready = selector.selectNow();
 
                 if (ready == 0) {
                     continue;
