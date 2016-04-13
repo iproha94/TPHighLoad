@@ -19,6 +19,7 @@ public class MonitorThread implements Runnable  {
     private OperatingSystemMXBean operatingSystemMXBean;
 
     private String cpuDir;
+    private String nameServer;
     private String rpsDir;
 
     public MonitorThread(String fileName) {
@@ -35,6 +36,7 @@ public class MonitorThread implements Runnable  {
             graphite_host = properties.getProperty("graphite_host");
             cpuDir = properties.getProperty("cpu_dir");
             rpsDir = properties.getProperty("rps_dir");
+            nameServer = properties.getProperty("name_server");
             graphite_port = new Integer(properties.getProperty("graphite_port"));
 
             LOGGER.info("graphite_host " + graphite_host);
@@ -55,12 +57,12 @@ public class MonitorThread implements Runnable  {
 
         while (true) {
             int rps = ProcessThread.counterRequests.getAndSet(0);
-            double cpu = operatingSystemMXBean.getSystemLoadAverage();
+            double cpu = operatingSystemMXBean.getSystemLoadAverage() * 100 / Runtime.getRuntime().availableProcessors();
 
             LOGGER.info("rps " + rps + '\t' + "cpu " + cpu);
 
-            graphiteClient.sendMetric(cpuDir, cpu);
-            graphiteClient.sendMetric(rpsDir, rps);
+            graphiteClient.sendMetric(nameServer + cpuDir, cpu);
+            graphiteClient.sendMetric(nameServer + rpsDir, rps);
 
             try {
                 Thread.sleep(1000);
@@ -69,4 +71,5 @@ public class MonitorThread implements Runnable  {
             }
         }
     }
+
 }

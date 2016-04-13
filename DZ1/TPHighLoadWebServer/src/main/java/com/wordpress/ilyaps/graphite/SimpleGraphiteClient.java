@@ -3,8 +3,7 @@ package com.wordpress.ilyaps.graphite;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class SimpleGraphiteClient {
 
 	private final String graphiteHost;
 	private final int graphitePort;
-	
+
 	/**
 	 * Create a new Graphite client.
 	 * 
@@ -47,14 +46,17 @@ public class SimpleGraphiteClient {
 	 */
 	public void sendMetrics(Map<String, Number> metrics, long timeStamp) {
 		try {
-			Socket socket = createSocket();
-			OutputStream s = socket.getOutputStream();
-			PrintWriter out = new PrintWriter(s, true);
+			InetAddress address = InetAddress.getByName(this.graphiteHost);
+			DatagramSocket datagramSocket = new DatagramSocket();
+
 			for (Map.Entry<String, Number> metric: metrics.entrySet()) {
-				out.printf("%s %s %d%n", metric.getKey(), metric.getValue(), timeStamp);	
-			}			
-			out.close();
-			socket.close();
+				byte[] buf = String.format("%s %s %d", metric.getKey(), metric.getValue(), timeStamp).getBytes();
+
+				DatagramPacket packet = new DatagramPacket(
+						buf, buf.length, address, this.graphitePort);
+
+				datagramSocket.send(packet);
+			}
 		} catch (UnknownHostException e) {
 			throw new GraphiteException("Unknown host: " + graphiteHost);
 		} catch (IOException e) {
@@ -90,8 +92,8 @@ public class SimpleGraphiteClient {
 		}}, timeStamp);
 	}
 	
-	protected Socket createSocket() throws UnknownHostException, IOException {
-		return new Socket(graphiteHost, graphitePort);
+	protected DatagramSocket createSocket() throws UnknownHostException, IOException {
+		return new DatagramSocket(graphitePort, InetAddress.getByName(graphiteHost));
 	}
 	 
 	/***
@@ -101,5 +103,10 @@ public class SimpleGraphiteClient {
 	 */
 	protected long getCurrentTimestamp() {
 		return System.currentTimeMillis() / 1000;
+	}
+
+	public static void main(String[] args) {
+		System.out.println(System.currentTimeMillis() / 1000);
+
 	}
 }
