@@ -12,6 +12,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by ilyaps on 12.03.16.
@@ -19,6 +20,8 @@ import java.util.Set;
 public class ProcessThread implements Runnable {
     private final static Logger LOGGER = Logger.getLogger(ProcessThread.class);
     static int BUFFER_SIZE = 4096;
+
+    public static AtomicInteger counterRequests = new AtomicInteger(0);
 
     private final Queue<SocketChannel> socketChannelQueue;
     private final Selector selector;
@@ -34,8 +37,7 @@ public class ProcessThread implements Runnable {
         while (true) {
             try {
                 takeNewSockets();
-
-                int ready = selector.selectNow();
+                int ready = selector.select(200);
 
                 if (ready == 0) {
                     continue;
@@ -108,6 +110,7 @@ public class ProcessThread implements Runnable {
     }
 
     public static void close(SelectionKey key) throws IOException {
+        counterRequests.getAndIncrement();
         key.channel().close();
         key.cancel();
     }
