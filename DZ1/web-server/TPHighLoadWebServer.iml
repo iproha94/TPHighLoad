@@ -12,7 +12,5 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
-    <orderEntry type="library" name="Maven: io.prometheus:simpleclient_graphite_bridge:0.0.13" level="project" />
-    <orderEntry type="library" name="Maven: io.prometheus:simpleclient:0.0.13" level="project" />
   </component>
 </module>

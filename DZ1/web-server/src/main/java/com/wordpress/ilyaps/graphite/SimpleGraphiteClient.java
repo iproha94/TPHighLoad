@@ -30,15 +30,6 @@ public class SimpleGraphiteClient {
 	}
 
 	/**
-	 * Send a set of metrics with the current time as timestamp to graphite.
-	 *  
-	 * @param metrics the metrics as key-value-pairs
-	 */
-	public void sendMetrics(Map<String, Number> metrics) {
-		sendMetrics(metrics, getCurrentTimestamp());
-	}
-
-	/**
 	 * Send a set of metrics with a given timestamp to graphite.
 	 *  
 	 * @param metrics the metrics as key-value-pairs
@@ -63,7 +54,16 @@ public class SimpleGraphiteClient {
 			throw new GraphiteException("Error while writing data to graphite: " + e.getMessage(), e);
 		}
 	}
-	
+
+	/**
+	 * Send a set of metrics with the current time as timestamp to graphite.
+	 *
+	 * @param metrics the metrics as key-value-pairs
+	 */
+	public void sendMetrics(Map<String, Number> metrics) {
+		sendMetrics(metrics, getCurrentTimestamp());
+	}
+
 	/**
 	 * Send a single metric with the current time as timestamp to graphite. 
 	 * 
@@ -87,26 +87,16 @@ public class SimpleGraphiteClient {
 	 */
 	@SuppressWarnings("serial")
 	public void sendMetric(final String key, final Number value, long timeStamp) {		
-		sendMetrics(new HashMap<String, Number>() {{
-			put(key, value);
-		}}, timeStamp);
+		sendMetrics(new HashMap<String, Number>() {{ put(key, value); }}, timeStamp);
 	}
-	
-	protected DatagramSocket createSocket() throws UnknownHostException, IOException {
-		return new DatagramSocket(graphitePort, InetAddress.getByName(graphiteHost));
-	}
-	 
+
 	/***
 	 * Compute the current graphite timestamp.
-	 * 
+	 *
 	 * @return Seconds passed since 1.1.1970
 	 */
 	protected long getCurrentTimestamp() {
 		return System.currentTimeMillis() / 1000;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(System.currentTimeMillis() / 1000);
-
-	}
 }

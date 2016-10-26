@@ -33,19 +33,20 @@ public class MonitorThread implements Runnable  {
         try (final FileInputStream fis = new FileInputStream(fileName)) {
             final Properties properties = new Properties();
             properties.load(fis);
-            graphite_host = properties.getProperty("graphite_host");
+
             cpuDir = properties.getProperty("cpu_dir");
             rpsDir = properties.getProperty("rps_dir");
             nameServer = properties.getProperty("name_server");
+
+            graphite_host = properties.getProperty("graphite_host");
             graphite_port = new Integer(properties.getProperty("graphite_port"));
 
-            LOGGER.info("graphite_host " + graphite_host);
+            LOGGER.fatal("graphite_host " + graphite_host);
+            LOGGER.fatal("graphite_port " + graphite_port);
             LOGGER.info("cpuDir " + cpuDir);
             LOGGER.info("rpsDir " + rpsDir);
-            LOGGER.info("graphite_port " + graphite_port);
-
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.fatal(e);
         }
 
         operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
@@ -54,9 +55,8 @@ public class MonitorThread implements Runnable  {
 
     @Override
     public void run() {
-
         while (true) {
-            int rps = ProcessThread.counterRequests.getAndSet(0);
+            int rps = HeadThread.counterRequests.getAndSet(0);
             double cpu = operatingSystemMXBean.getSystemLoadAverage() * 100 / Runtime.getRuntime().availableProcessors();
 
             LOGGER.info("rps " + rps + '\t' + "cpu " + cpu);
