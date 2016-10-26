@@ -1,5 +1,9 @@
 # TPHighLoad
 ## DZ1 - Web server
+Запуск графита:  
+sudo service apache2 reload  
+sudo service carbon-cache start  
+
 1. Написан на Java Nio.  
 2. Работает в 1 поток.  
 3. Поддерживает ContentType:  
