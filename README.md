@@ -1,31 +1,44 @@
-# TPHighLoad
-## DZ1 - Web server
-Запуск графита:  
-sudo service apache2 reload  
-sudo service carbon-cache start  
+Домашние задания по дисциплине: **Проектирование высоконагруженных систем**  
 
-1. Написан на Java Nio.  
-2. Работает в 1 поток.  
-3. Поддерживает ContentType:  
-3.1 text/html  
-3.2 text/css  
-3.3 text/javascript  
-3.4 image/jpeg  
-3.5 image/jpeg  
-3.6 image/png  
-3.7 image/gif  
-3.8 application/x-shockwave-flash  
-3.9 image/x-icon  
-4. С помощью ../ выйти за пределы основной папки не получится.
-5. Поддерживаемые методы:  
-5.1 GET  
-5.2 HEAD  
-6. Поддерживаемые ответы:  
-6.1 200 OK  
-6.2 400 Bad Request  
-6.3 403 Forbidden  
-6.4 404 Not Found  
-6.5 405 Method Not Allowed  
-7. Каждую секунду на графит (указывается ip и порт) посылается метрика с rps и загрузкой cpu
+## DZ1 - Web server
+Веб-сервер, отдающий статику. Посылает свою статистику на указанный Graphite севрер.
+
+**Язык:** Java  
+**Используемые технологии:**  
+1. Graphite - сбор метрик
+2. Nio - работа с сокетами
+
+**Запуск графита:**  
+*sudo service apache2 reload*  
+*sudo service carbon-cache start*  
+
+1. Работает в 1 поток.  
+2. Поддерживает ContentType:  
+  1 text/html  
+  2 text/css  
+  3 text/javascript  
+  4 image/jpeg  
+  5 image/jpeg  
+  6 image/png  
+  7 image/gif  
+  8 application/x-shockwave-flash  
+  9 image/x-icon  
+3. С помощью ../ выйти за пределы основной папки не получится.
+4. Поддерживаемые методы:  
+  1 GET  
+  2 HEAD  
+5. Поддерживаемые ответы:  
+  1 200 OK  
+  2 400 Bad Request  
+  3 403 Forbidden  
+  4 404 Not Found  
+  5 405 Method Not Allowed  
+6. Каждую секунду на графит (указывается ip и порт) посылается метрика с rps и загрузкой cpu
+
+## DZ2 - Исследование кеша процессора
+
+**Язык:** C++  
+
+Читаем последовательно увеличивающиеся данные, и скачок времени чтения будет означать переход к следующему уровню кешей процессора.
 
 
