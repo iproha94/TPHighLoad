@@ -13,35 +13,40 @@
 *sudo service apache2 reload*  
 *sudo service carbon-cache start*  
 
-1. Работает в 1 поток.  
-2. Поддерживает ContentType:  
-  1 text/html  
-  2 text/css  
-  3 text/javascript  
-  4 image/jpeg  
-  5 image/jpeg  
-  6 image/png  
-  7 image/gif  
-  8 application/x-shockwave-flash  
-  9 image/x-icon  
-3. С помощью ../ выйти за пределы основной папки не получится.
-4. Поддерживаемые методы:  
-  1 GET  
-  2 HEAD  
-5. Поддерживаемые ответы:  
-  1 200 OK  
-  2 400 Bad Request  
-  3 403 Forbidden  
-  4 404 Not Found  
-  5 405 Method Not Allowed  
-6. Каждую секунду на графит (указывается ip и порт) посылается метрика:
-  1. rps
-  2. загрузкой cpu
+Работает в 1 поток.  
+
+**Поддерживает ContentType:**  
+1. text/html  
+2. text/css  
+3. text/javascript  
+4. image/jpeg  
+5. image/jpeg  
+6. image/png  
+7. image/gif  
+8. application/x-shockwave-flash  
+9. image/x-icon  
+
+С помощью *../* выйти за пределы основной папки не получится.
+
+**Поддерживаемые методы:**  
+  1. GET  
+  2. HEAD  
+  
+**Поддерживаемые ответы:**  
+  1. 200 OK  
+  2. 400 Bad Request  
+  3. 403 Forbidden  
+  4. 404 Not Found  
+  5. 405 Method Not Allowed  
+
+Каждую секунду на графит (указывается ip и порт) **посылается метрика:**  
+  1. rps  
+  2. загрузкой cpu  
 
 ## DZ2 - Исследование кеша процессора
 
 **Язык:** C++  
 
-Читаем последовательно увеличивающиеся данные, и скачок времени чтения будет означать переход к следующему уровню кешей процессора.
+Последовательно увеличивающиеся данные читаем (последовательно и случайно), и скачок времени чтения будет означать переход к следующему уровню кешей процессора.
 
 
